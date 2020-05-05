@@ -3,6 +3,12 @@
 - hosts: gluu
   remote_user: root
   tasks:
+    - name: Install prerequsites
+      apt:
+        name: ['gnupg2']
+        update_cache: yes
+        state: present
+
     - name: Setting up Gluu repository
       apt_key: 
         url: "https://repo.gluu.org/debian/gluu-apt.key"
