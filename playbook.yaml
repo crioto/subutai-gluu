@@ -5,7 +5,7 @@
   tasks:
     - name: Install prerequsites
       apt:
-        name: ['gnupg']
+        name: ['gnupg', 'ca-certificates']
         update_cache: yes
         state: present
 
