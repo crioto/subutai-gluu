@@ -1,58 +1,61 @@
 ---
 
-- name: Setting up Gluu repository
-  apt_key: 
-    url: "https://repo.gluu.org/debian/gluu-apt.key"
+- hosts: gluu
+  remote_user: root
+  tasks:
+    - name: Setting up Gluu repository
+      apt_key: 
+        url: "https://repo.gluu.org/debian/gluu-apt.key"
 
-- name: Adding Gluu repository
-  apt_repository:
-    repo: "deb https://repo.gluu.org/debian stable main"
-    state: present
+    - name: Adding Gluu repository
+      apt_repository:
+        repo: "deb https://repo.gluu.org/debian stable main"
+        state: present
 
-- name: Install gluu-server
-  apt:
-    name: "gluu-server"
-    update_cache: yes
-    state: present
+    - name: Install gluu-server
+      apt:
+        name: "gluu-server"
+        update_cache: yes
+        state: present
 
-- name: Install python requirements
-  apt:
-    name: ['libsasl2-dev', 'python-dev', 'libldap2-dev', 'libssl-dev', 'python-pip']
-    update_cache: yes
-    state: present
+    - name: Install python requirements
+      apt:
+        name: ['libsasl2-dev', 'python-dev', 'libldap2-dev', 'libssl-dev', 'python-pip']
+        update_cache: yes
+        state: present
 
-- name: Install pip libraries
-  pip: 
-    name: ['dpath', 'pyDes', 'python-ldap']
-    state: present
+    - name: Install pip libraries
+      pip: 
+        name: ['dpath', 'pyDes', 'python-ldap']
+        state: present
 
-- name: Enable Gluu
-  command: /sbin/gluu-serverd enable
+    - name: Enable Gluu
+      command: /sbin/gluu-serverd enable
 
-- name: Start Gluu
-  command: /sbin/gluu-serverd start
+    - name: Start Gluu
+      command: /sbin/gluu-serverd start
 
-- name: Template Gluu Configuration
-  template:
-    src: setup.properties.j2
-    dest: /opt/gluu-server/install/community-edition-setup/setup.properties
-    mode: 0644
-    owner: root
-    group: root
+    - name: Template Gluu Configuration
+      template:
+        src: setup.properties.j2
+        dest: /opt/gluu-server/install/community-edition-setup/setup.properties
+        mode: 0644
+        owner: root
+        group: root
 
-- name: Copy LDAP schema
-  template:
-    src: custom_schema.json
-    dest: /opt/gluu-server/install/community-edition-setup/schema/custom_schema.json
-    mode: 0644
-    owner: root
-    group: root
+    - name: Copy LDAP schema
+      template:
+        src: custom_schema.json
+        dest: /opt/gluu-server/install/community-edition-setup/schema/custom_schema.json
+        mode: 0644
+        owner: root
+        group: root
 
-- name: Generate LDAP schema
-  command: "{{ gluu_ssh }} cd /install/community-edition-setup/schema/ && python manager.py --type openldap --filename custom_schema.json autogenerate'"
+    - name: Generate LDAP schema
+      command: "{{ gluu_ssh }} cd /install/community-edition-setup/schema/ && python manager.py --type openldap --filename custom_schema.json autogenerate'"
 
-- name: Generate OpenDJ schema
-  command: "{{ gluu_ssh }} 'cd /install/community-edition-setup/schema/ && python manager.py --type opendj --filename custom_schema.json autogenerate'"
+    - name: Generate OpenDJ schema
+      command: "{{ gluu_ssh }} 'cd /install/community-edition-setup/schema/ && python manager.py --type opendj --filename custom_schema.json autogenerate'"
 
-- name: Setup Gluu Configuration
-  command: "{{ gluu_ssh }} 'cd /install/community-edition-setup/ && ./setup.py -n -f ./setup.properties -d /install/community-edition-setup'"
+    - name: Setup Gluu Configuration
+      command: "{{ gluu_ssh }} 'cd /install/community-edition-setup/ && ./setup.py -n -f ./setup.properties -d /install/community-edition-setup'"
