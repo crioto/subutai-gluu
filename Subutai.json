@@ -1,0 +1,136 @@
+{
+    "name": "${environmentName}",
+    "description": "GLUU - SSO, 2FA and Access Management",
+    "version": "1.0.0",
+    "author": "https://github.com/crioto",
+    "containers": [
+        {
+            "hostname": "${webContainerName}",
+            "template": "debian-buster",
+            "peer-criteria": "HTTP-GROUP",
+            "size": "${containerSize}",
+            "port-mapping": []
+        }
+    ],
+    "peer-criteria": [
+        {
+            "name": "HTTP-GROUP"
+        }
+    ],
+    "ansible-configuration": {
+        "source-url": "https://github.com/crioto/subutai-gluu/archive/master.zip",
+        "ansible-playbook": "playbook.yaml",
+        "extra-vars": [
+            {
+                "key": "environmentName",
+                "value": "${environmentName}"
+            },
+            {
+                "key": "domainName",
+                "value": "${domainName}"
+            },
+            {
+                "key": "webContainerName",
+                "value": "${webContainerName}"
+            },
+            {
+                "key": "containerSize",
+                "value": "${containerSize}"
+            },
+            {
+                "key": "orgName",
+                "value": "${orgName}"
+            },
+            {
+                "key": "countryCode",
+                "value": "${countryCode}"
+            },
+            {
+                "key": "city",
+                "value": "${city}"
+            },
+            {
+                "key": "state",
+                "value": "${state}"
+            },
+            {
+                "key": "jksPass",
+                "value": "${jksPass}"
+            },
+            {
+                "key": "ldapPath",
+                "value": "${ldapPath}"
+            }
+        ],
+        "groups": [
+            {
+                "name": "gluu",
+                "hostnames": [
+                    "${webContainerName}"
+                ]
+            }
+        ]
+    },
+    "user-variables": {
+        "environmentName": {
+            "description": "Enter the environment name",
+            "type": "string",
+            "default": "gluu",
+            "validation": "[a-zA-Z0-9]+"
+        },
+        "domainName": {
+            "description": "Enter the application domain name",
+            "type": "domain",
+            "default": "change.the.domain",
+            "validation": "[a-zA-Z0-9]+"
+        },
+        "webContainerName": {
+            "description": "Enter the container's hostname",
+            "type": "string",
+            "default": "gluu",
+            "validation": "[a-zA-Z0-9]+"
+        },
+        "containerSize": {
+            "description": "Container Size",
+            "type": "enum",
+            "default": "MEDIUM",
+            "validation": "MEDIUM,LARGE,HUGE"
+        },
+        "orgName": {
+            "description": "Organization name",
+            "type": "string",
+            "default": "YourOrganizationName",
+            "validation": "[a-zA-Z0-9]+"
+        },
+        "countryCode": {
+            "description": "Country code",
+            "type": "string",
+            "default": "US",
+            "validation": "[a-zA-Z]+"
+        },
+        "city": {
+            "description": "City",
+            "type": "string",
+            "default": "Boston",
+            "validation": "[a-zA-Z]+"
+        },
+        "state": {
+            "description": "State",
+            "type": "string",
+            "default": "Massachusetts",
+            "validation": "[a-zA-Z]+"
+        },
+        "jksPass": {
+            "description": "Password used in Java KeyStore",
+            "type": "string",
+            "default": "strongpassword12",
+            "validation": "[a-zA-Z]+"
+        },
+        "ldapPass": {
+            "description": "Manager's password in LDAP",
+            "type": "string",
+            "default": "strongpassword12",
+            "validation": "[a-zA-Z]+"
+        }
+    }
+}
