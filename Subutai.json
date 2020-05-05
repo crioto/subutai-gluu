@@ -124,13 +124,13 @@
             "description": "Password used in Java KeyStore",
             "type": "string",
             "default": "strongpassword12",
-            "validation": "[a-zA-Z]+"
+            "validation": "[a-zA-Z0-9]+"
         },
         "ldapPass": {
             "description": "Manager's password in LDAP",
             "type": "string",
             "default": "strongpassword12",
-            "validation": "[a-zA-Z]+"
+            "validation": "[a-zA-Z0-9]+"
         }
     }
 }
