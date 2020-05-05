@@ -52,7 +52,7 @@
         group: root
 
     - name: Generate LDAP schema
-      command: "{{ gluu_ssh }} cd /install/community-edition-setup/schema/ && python manager.py --type openldap --filename custom_schema.json autogenerate'"
+      command: "{{ gluu_ssh }} 'cd /install/community-edition-setup/schema/ && python manager.py --type openldap --filename custom_schema.json autogenerate'"
 
     - name: Generate OpenDJ schema
       command: "{{ gluu_ssh }} 'cd /install/community-edition-setup/schema/ && python manager.py --type opendj --filename custom_schema.json autogenerate'"
