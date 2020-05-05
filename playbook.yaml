@@ -15,7 +15,7 @@
 
     - name: Adding Gluu repository
       apt_repository:
-        repo: "deb https://repo.gluu.org/debian stable main"
+        repo: "deb https://repo.gluu.org/debian buster-stable main"
         state: present
 
     - name: Install gluu-server
