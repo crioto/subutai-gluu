@@ -5,7 +5,7 @@
   tasks:
     - name: Install prerequsites
       apt:
-        name: ['gnupg2']
+        name: ['gnupg']
         update_cache: yes
         state: present
 
